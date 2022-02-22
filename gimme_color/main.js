@@ -168,12 +168,14 @@ window.addEventListener("DOMContentLoaded", () => {
             videoParam = {
                 width: w == undefined ? 800 : w,
                 height: h == undefined ? 800 : h,
+                facingMode: 'environment',
                 deviceId: { exact: camID }
             }
         } else {
             videoParam = {
                 width: w == undefined ? 800 : w,
                 height: h == undefined ? 800 : h,
+                facingMode: 'environment'
             }
         }
 
