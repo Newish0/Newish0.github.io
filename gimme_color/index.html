@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>What's The Color Web App</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+
+    <div id="out-vid-container">
+        <video></video>
+    </div>
+
+    <div class="container">
+        <canvas id="canvas"></canvas>
+
+        <div id="info">
+            <div class="sample-color-preview"></div>
+
+            <div>
+                <div class="text-label">RGB:</div>
+                <br>
+                <div class="text-label">HSV:</div>
+                <br>
+                <div class="text-label"> Nearest Color Name:</div>
+            </div>
+
+            
+            <div>
+                <div id="rgb">
+                    <div class="text-data"></div>
+                </div>
+                
+                <div id="hsv">
+                    <div class="text-data"></div>
+                </div>
+    
+                <div id="color-name">
+                    <div class="text-data"></div>
+                    <!-- <div class="name-color-preview"></div> -->
+                </div>
+            </div>
+
+
+        </div>
+
+        <div id="controls">
+            <div>
+                <div id="sample-size">
+                    <span>Sample area: </span>
+                    <div class="text-data">64x64</div>
+                    <input type="range" min="1" max="256" value="64" class="slider" id="sample-size-input">
+                </div>
+
+                <div id="device-options">
+
+                    <label for="camera-options">Camera:</label>
+                    <select name="cameras" id="camera-options">
+                        <!-- options added via JS-->
+                    </select>
+
+                    <label for="res-options">Resolution:</label>
+                    <select name="resolution" id="res-options">
+                        <!-- options added via JS-->
+                    </select>
+                </div>
+
+                <div>
+                    <button id="pause-sampling">
+                        <i class="fa-solid fa-pause"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
