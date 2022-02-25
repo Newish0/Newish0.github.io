@@ -14,7 +14,7 @@ fetch("data/colornames.min.json")
 
 
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
 
 
     const FPS = 30;
@@ -55,24 +55,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
     // init camera list selector
-    navigator.mediaDevices.enumerateDevices()
-        .then(function (devices) {
-            let cameraOptions = document.querySelector("#camera-options");
-
-            devices.forEach(function (device) {
-                if (device.kind == "videoinput") {
-                    let camOption = document.createElement("option");
-
-                    camOption.value = device.deviceId;
-                    camOption.innerText = device.label;
-
-                    cameraOptions.appendChild(camOption);
-                } // if
-            });
-        })
-        .catch(function (err) {
-            console.log(err.name + ": " + err.message);
-        });
+    initCameraList();
 
     // init camera select input listener
     document.querySelector("#camera-options").addEventListener("change", (evt) => {
@@ -133,6 +116,27 @@ window.addEventListener("DOMContentLoaded", () => {
             frameCache.update();
             isPuased = !isPuased;
         }, 10000 / FPS)
+    }
+
+    function initCameraList() {
+        navigator.mediaDevices.enumerateDevices()
+        .then(function (devices) {
+            let cameraOptions = document.querySelector("#camera-options");
+
+            devices.forEach(function (device) {
+                if (device.kind == "videoinput") {
+                    let camOption = document.createElement("option");
+
+                    camOption.value = device.deviceId;
+                    camOption.innerText = device.label;
+
+                    cameraOptions.appendChild(camOption);
+                } // if
+            });
+        })
+        .catch(function (err) {
+            console.log(err.name + ": " + err.message);
+        });
     }
 
     function initResolutionInput(res) {
