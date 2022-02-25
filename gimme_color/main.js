@@ -221,13 +221,33 @@ window.addEventListener("DOMContentLoaded", () => {
     } // initCamera
 
     function getClosestColor(colorHex) {
-        let last = colorNames[Object.keys(colorNames)[0]];
+        let last = {
+            color: Object.keys(colorNames)[0],
+            name: colorNames[Object.keys(colorNames)[0]]
+        };
+
+        let target = hexToRgb(colorHex);
+        let minDelta = 100000;
+
         for (let x in colorNames) {
-            if (colorHex < x) {
-                return last;
-            } // if
-            last = colorNames[x];
+            let cur = hexToRgb(x);
+
+            let dr = cur.r -  target.r;
+            let dg = cur.g -  target.g;
+            let db = cur.b -  target.b;
+
+            let delta = Math.sqrt(dr * dr + dg * dg + db * db);
+
+            if (delta < minDelta) {
+                minDelta = delta;
+                last = {
+                    color: x,
+                    name: colorNames[x]
+                };
+            }
         }
+
+        return last;
     }
 
     function updateInfoPanel(avgColor) {
@@ -243,13 +263,33 @@ window.addEventListener("DOMContentLoaded", () => {
 
         rgb.querySelector(".text-data").innerText = avgColor.r + ", " + avgColor.g + ", " + avgColor.b;
         hsv.querySelector(".text-data").innerText = avgColorHSV.h + ", " + avgColorHSV.s + ", " + avgColorHSV.v;
-        colorName.querySelector(".text-data").innerText = getClosestColor(rgbToHex(avgColor.r, avgColor.g, avgColor.b));
+
+        let closestColor = getClosestColor(rgbToHex(avgColor.r, avgColor.g, avgColor.b));
+
+        if (closestColor != undefined) {
+
+            colorName.querySelector(".text-data").innerText = closestColor.name;
+            
+            document.querySelectorAll(".name-color-preview").forEach((n) => {
+                n.style.backgroundColor = "#" + closestColor.color;
+            })
+        }
 
     }
 
     // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
     function rgbToHex(r, g, b) {
         return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
     }
 
     https://stackoverflow.com/questions/2541481/get-average-color-of-image-via-javascript

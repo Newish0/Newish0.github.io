@@ -41,9 +41,10 @@ body {
 }
 
 .name-color-preview {
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
+    position: absolute;
+    float: right;
+    width: var(--step-0);
+    height: var(--step-0);
 }
 
 .text-data {
