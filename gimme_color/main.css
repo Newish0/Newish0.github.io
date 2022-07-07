@@ -106,12 +106,14 @@ select {
 */
 
 #canvas {
+    height: 0; /* aka let flex container scales it*/
+    flex-grow: 1;
+    flex-shrink: 1;
     width: 100%;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-    flex-grow: 1;
     object-fit: cover;
 }
 
@@ -140,7 +142,7 @@ select {
 #controls {
     width: 100%;
     background-color: var(--color-dark-2);
-    margin-top: min(5%, 1rem);
+    /* margin-top: min(5%, 1rem); */
     color: var(--color-light-1);
 }
 
@@ -155,6 +157,7 @@ select {
 #controls #sample-size {
     display: grid;
     width: 100%;
+    gap: 5px;
     grid-template-columns: 8rem 8rem 1fr;
     align-items: center;
     margin-bottom: 1rem;
@@ -196,7 +199,8 @@ select {
 }
 
 #controls #sample-size .slider {
-    margin: 0.5rem;
+    margin: 0;
+    /* margin: 0.5rem; */
 }
 
 #controls #sample-size span {
