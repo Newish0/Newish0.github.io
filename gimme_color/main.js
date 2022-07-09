@@ -125,6 +125,8 @@ async function main() {
 
     curStream = await initCamera(cameraSettings);
 
+    alert(curStream);
+
     loop();
 
     function togglePause() {
@@ -231,8 +233,6 @@ async function main() {
                 track.stop();
             });
         }
-
-        alert();
         
 
         videoParam = {
