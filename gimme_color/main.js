@@ -131,15 +131,26 @@ async function main() {
 
     function loop() {
 
-        document.body.innerHTML += `<div>${performance.now()}</div>`;
+        document.body.innerHTML += `<div> start </div>`;
 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+        document.body.innerHTML += `<div> drawn </div>`;
+
         let curTime = performance.now();
+        document.body.innerHTML += `<div> perf now </div>`;
         if (curTime > nextCalTime) {
             let avgColor = getAverageRGB(ctx, canvas.width / 2 - sampleSize / 2, canvas.height / 2 - sampleSize / 2, sampleSize, sampleSize);
+
+            document.body.innerHTML += `<div> finish avg color </div>`;
+
             updateInfoPanel(avgColor);
+
+            document.body.innerHTML += `<div> updated avg calc </div>`;
+
             nextCalTime = curTime + 1000 / FPS / CALCULATION_CYCLE_MULT;
+
+            document.body.innerHTML += `<div> loop end </div>`;
         } // if
 
         // draw GUI element after getAverageRGB calculation
