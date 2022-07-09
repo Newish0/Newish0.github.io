@@ -63,29 +63,38 @@ async function main() {
     document.querySelector("#pause-sampling").addEventListener(("click"), togglePause);
 
     // check camera
-    let cameraPermissionStat = await navigator.permissions.query({ name: 'camera' });
+    let cameraPermissionStat = null;
 
-    if (cameraPermissionStat.state === "granted") {
-        // init camera list selector
-        initCameraList();
-    } else {
-        prompCameraRequired();
+    try {
+        cameraPermissionStat = await navigator.permissions.query({ name: 'camera' });
+    } catch (error) {
+        console.log("Cannot check camera permission.");
     }
 
-    cameraPermissionStat.onchange = ((e) => {
-        // detecting if the event is a change
-        if (e.type === 'change') {
-            // checking what the new permissionStatus state is
-            const newState = e.target.state
-            if (newState === 'denied') {
-                prompCameraRequired();
-            } else if (newState === 'granted') {
-                initCameraList();
-            } else {
-                prompCameraRequired();
-            }
+    // only run if cameraPermissionStat is available
+    if(cameraPermissionStat) {
+        if (cameraPermissionStat.state === "granted") {
+            // init camera list selector
+            initCameraList();
+        } else {
+            prompCameraRequired();
         }
-    });
+    
+        cameraPermissionStat.onchange = ((e) => {
+            // detecting if the event is a change
+            if (e.type === 'change') {
+                // checking what the new permissionStatus state is
+                const newState = e.target.state
+                if (newState === 'denied') {
+                    prompCameraRequired();
+                } else if (newState === 'granted') {
+                    initCameraList();
+                } else {
+                    prompCameraRequired();
+                }
+            }
+        });
+    }
 
 
     // init camera select input listener
