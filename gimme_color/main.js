@@ -125,6 +125,8 @@ async function main() {
 
     curStream = await initCamera(cameraSettings);
 
+    
+    alert("STream");
     alert(curStream);
 
     loop();
