@@ -131,7 +131,7 @@ async function main() {
 
     function loop() {
 
-        document.body.innerText += performance.now();
+        document.body.innerHTML += `<div>${performance.now()}</div>`;
 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
