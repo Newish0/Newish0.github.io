@@ -72,14 +72,14 @@ async function main() {
     }
 
     // only run if cameraPermissionStat is available
-    if(cameraPermissionStat) {
+    if (cameraPermissionStat) {
         if (cameraPermissionStat.state === "granted") {
             // init camera list selector
             initCameraList();
         } else {
             prompCameraRequired();
         }
-    
+
         cameraPermissionStat.onchange = ((e) => {
             // detecting if the event is a change
             if (e.type === 'change') {
@@ -102,7 +102,7 @@ async function main() {
 
         cameraSettings.camID = evt.target.value;
 
-        
+
         initCamera(cameraSettings).then(stream => curStream = stream);
         // initCamera(cameraSettings);
 
@@ -125,7 +125,21 @@ async function main() {
 
     curStream = await initCamera(cameraSettings);
 
-    
+
+
+    if (typeof console != "undefined")
+        if (typeof console.log != 'undefined')
+            console.olog = console.log;
+        else
+            console.olog = function () { };
+
+    console.log = function (message) {
+        console.olog(message);
+        document.body.append('<p>' + message + '</p>');
+    };
+    console.error = console.debug = console.info = console.log
+
+
 
     loop();
 
@@ -182,7 +196,7 @@ async function main() {
         document.querySelector("#pause-sampling").querySelector("i").className = isPuased ? "fa-solid fa-pause" : "fa-solid fa-play";
     }
 
-    
+
 
 
     function prompCameraRequired() {
@@ -251,7 +265,7 @@ async function main() {
                 track.stop();
             });
         }
-        
+
 
         videoParam = {
             width: cameraSettings.width,
