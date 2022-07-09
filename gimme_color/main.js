@@ -232,7 +232,7 @@ async function main() {
             });
         }
 
-
+        alert();
         
 
         videoParam = {
