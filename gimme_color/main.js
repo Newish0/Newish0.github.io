@@ -35,6 +35,7 @@ async function main() {
     let canvas = document.querySelector("#canvas");
     let ctx = canvas.getContext("2d");
 
+
     let cameraSettings = {
         width: 720,
         height: 720,
@@ -43,6 +44,8 @@ async function main() {
 
     let sampleSize = 64;
     let isPuased = false;
+
+    let isFirstLoadInitRes = true;
 
     let nextCalTime = 0;
 
@@ -101,6 +104,8 @@ async function main() {
     document.querySelector("#camera-options").addEventListener("change", (evt) => {
 
         cameraSettings.camID = evt.target.value;
+
+        isFirstLoadInitRes = true;
 
 
         initCamera(cameraSettings).then(stream => curStream = stream);
@@ -277,15 +282,6 @@ async function main() {
         let streamSettings = stream.getVideoTracks()[0].getSettings();
 
 
-
-        video.addEventListener("loadedmetadata", function (e) {
-            initResolutionInput({
-                width: 800,
-                height: 800
-            });
-
-        }, false);
-
         document.querySelectorAll("#camera-options option").forEach((n) => {
             if (streamSettings.deviceId == n.value) {
                 n.selected = true;
@@ -302,7 +298,18 @@ async function main() {
         video.addEventListener('loadedmetadata', function () {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
+
+            
+            if (isFirstLoadInitRes) {
+                initResolutionInput({
+                    width: video.videoWidth,
+                    height: video.videoHeight
+                });
+
+                isFirstLoadInitRes = false;
+            }
         });
+        
 
         return stream;
     } // initCamera
