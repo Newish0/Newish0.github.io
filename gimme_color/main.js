@@ -147,7 +147,7 @@ async function main() {
     }
 
     function initCanvas() {
-        
+
         video.addEventListener('play', function () {
             var cache = this; //cache
             (function loop() {
@@ -170,7 +170,7 @@ async function main() {
             })();
         }, 0);
 
-        // ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // ctx.drawImage(video, 0, 0, canvas.width, canvas.height); // NOTE: Feature not supported in iOS
 
         // let curTime = performance.now();
         // if (curTime > nextCalTime) {
@@ -276,11 +276,15 @@ async function main() {
 
         let streamSettings = stream.getVideoTracks()[0].getSettings();
 
-        // TODO
-        initResolutionInput({
-            width: 800,
-            height: 800
-        });
+
+
+        video.addEventListener("loadedmetadata", function (e) {
+            initResolutionInput({
+                width: 800,
+                height: 800
+            });
+
+        }, false);
 
         document.querySelectorAll("#camera-options option").forEach((n) => {
             if (streamSettings.deviceId == n.value) {
