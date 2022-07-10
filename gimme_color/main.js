@@ -154,11 +154,11 @@ async function main() {
         let curTime = performance.now();
         document.body.innerHTML += `<div> perf now </div>`;
         if (curTime > nextCalTime) {
-            let avgColor = getAverageRGB(ctx, canvas.width / 2 - sampleSize / 2, canvas.height / 2 - sampleSize / 2, sampleSize, sampleSize);
+            // let avgColor = getAverageRGB(ctx, canvas.width / 2 - sampleSize / 2, canvas.height / 2 - sampleSize / 2, sampleSize, sampleSize);
 
             document.body.innerHTML += `<div> finish avg color </div>`;
 
-            updateInfoPanel(avgColor);
+            // updateInfoPanel(avgColor);
 
             document.body.innerHTML += `<div> updated avg calc </div>`;
 
