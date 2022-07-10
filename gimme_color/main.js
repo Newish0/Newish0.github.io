@@ -125,57 +125,7 @@ async function main() {
 
     curStream = await initCamera(cameraSettings);
 
-
-
-    if (typeof console != "undefined")
-        if (typeof console.log != 'undefined')
-            console.olog = console.log;
-        else
-            console.olog = function () { };
-
-    console.log = function (message) {
-        console.olog(message);
-        document.body.append('<p>' + message + '</p>');
-    };
-    console.error = console.debug = console.info = console.log
-
-
-
-    loop();
-
-    function loop() {
-
-        document.body.innerHTML += `<div> start </div>`;
-
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        document.body.innerHTML += `<div> drawn </div>`;
-
-        let curTime = performance.now();
-        document.body.innerHTML += `<div> perf now </div>`;
-        if (curTime > nextCalTime) {
-            // let avgColor = getAverageRGB(ctx, canvas.width / 2 - sampleSize / 2, canvas.height / 2 - sampleSize / 2, sampleSize, sampleSize);
-
-            document.body.innerHTML += `<div> finish avg color </div>`;
-
-            // updateInfoPanel(avgColor);
-
-            document.body.innerHTML += `<div> updated avg calc </div>`;
-
-            nextCalTime = curTime + 1000 / FPS / CALCULATION_CYCLE_MULT;
-
-            document.body.innerHTML += `<div> loop end </div>`;
-        } // if
-
-        // draw GUI element after getAverageRGB calculation
-        ctx.strokeStyle = '#0f0';
-        ctx.lineWidth = canvas.width * 0.0025;
-        ctx.strokeRect(canvas.width / 2 - sampleSize / 2, canvas.height / 2 - sampleSize / 2, sampleSize, sampleSize);
-
-        setTimeout(loop, 1000 / FPS);
-    }
-
-
+    initCanvas();
 
     function togglePause() {
         togglePauseIcon();
@@ -196,7 +146,46 @@ async function main() {
         document.querySelector("#pause-sampling").querySelector("i").className = isPuased ? "fa-solid fa-pause" : "fa-solid fa-play";
     }
 
+    function initCanvas() {
+        
+        video.addEventListener('play', function () {
+            var cache = this; //cache
+            (function loop() {
+                if (!cache.paused && !cache.ended) {
+                    ctx.drawImage(cache, 0, 0);
 
+                    let curTime = performance.now();
+                    if (curTime > nextCalTime) {
+                        let avgColor = getAverageRGB(ctx, canvas.width / 2 - sampleSize / 2, canvas.height / 2 - sampleSize / 2, sampleSize, sampleSize);
+                        updateInfoPanel(avgColor);
+                        nextCalTime = curTime + 1000 / FPS / CALCULATION_CYCLE_MULT;
+                    } // if
+                    // draw GUI element after getAverageRGB calculation
+                    ctx.strokeStyle = '#0f0';
+                    ctx.lineWidth = canvas.width * 0.0025;
+                    ctx.strokeRect(canvas.width / 2 - sampleSize / 2, canvas.height / 2 - sampleSize / 2, sampleSize, sampleSize);
+
+                    setTimeout(loop, 1000 / FPS);
+                }
+            })();
+        }, 0);
+
+        // ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // let curTime = performance.now();
+        // if (curTime > nextCalTime) {
+        //     let avgColor = getAverageRGB(ctx, canvas.width / 2 - sampleSize / 2, canvas.height / 2 - sampleSize / 2, sampleSize, sampleSize);
+        //     updateInfoPanel(avgColor);
+        //     nextCalTime = curTime + 1000 / FPS / CALCULATION_CYCLE_MULT;
+        // } // if
+
+        // // draw GUI element after getAverageRGB calculation
+        // ctx.strokeStyle = '#0f0';
+        // ctx.lineWidth = canvas.width * 0.0025;
+        // ctx.strokeRect(canvas.width / 2 - sampleSize / 2, canvas.height / 2 - sampleSize / 2, sampleSize, sampleSize);
+
+        // setTimeout(loop, 1000 / FPS);
+    }
 
 
     function prompCameraRequired() {
@@ -265,6 +254,8 @@ async function main() {
                 track.stop();
             });
         }
+
+
 
 
         videoParam = {
